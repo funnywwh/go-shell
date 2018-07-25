@@ -143,6 +143,11 @@ func (c *Command) Run() *Process {
 		fmt.Fprintln(os.Stderr, TracePrefix, c.shellCmd(false))
 	}
 	cmd := exec.Command(Shell[0], append(Shell[1:], c.shellCmd(false))...)
+
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		HideWindow: true,
+	}
+
 	log.Println(cmd.Args)
 	p := new(Process)
 	if c.in != nil {
